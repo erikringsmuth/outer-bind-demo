@@ -29,6 +29,8 @@
           ready: function() {
             // async to mimic an ajax request to retrieve the session information
             setTimeout(function() {
+              // pretend it came back as not signed in
+              this.state.sessionId = '';
               this.$.router.init();
             }.bind(this), 20);
           },
