@@ -1,10 +1,16 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
 <link rel="import" href="/layouts/sidebar-layout.html">
+<link rel="import" href="/elements/app-state.html">
 
 <polymer-element name="demo-page" attributes="pathArg1 queryParam1" noscript>
   <template>
+    <app-state state="{{state}}"></app-state>
     <sidebar-layout selected="demo">
       <div class="title">Data Binding Demo</div>
+
+      <h2>Session ID: {{state.sessionId}}</h2>
+
+      <input type="text" value="{{state.sessionId}}">
 
       <p>Path variables and query parameters are automatically attached to the element's attributes. Change values in the address bar and see them change here.</p>
 

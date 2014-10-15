@@ -9,33 +9,34 @@
     <link rel="stylesheet" href="/css/styles.css" shim-shadowdom>
     <link rel="import" href="/bower_components/app-router/src/app-router.html">
     <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/elements/app-state.html">
   </head>
   <body unresolved>
 
-    <polymer-element name="demo-app" attributes="sessionId">
+    <polymer-element name="demo-app">
       <template>
-        <app-router id="router" on-activate-route-end="{{routeActivated}}">
+        <app-state state="{{state}}"></app-state>
+        <app-router id="router" init="manual" mode="pushstate" on-state-change="{{routeChanged}}">
           <app-route path="/" import="/pages/home-page.html"></app-route>
           <app-route path="/demo/:pathArg1" import="/pages/demo-page.html"></app-route>
           <app-route path="/notes" import="/pages/notes-page.html"></app-route>
+          <app-route path="/login" import="/pages/login-page.html"></app-route>
           <app-route path="*" import="/pages/not-found-page.html"></app-route>
         </app-router>
       </template>
       <script>
         Polymer({
-          routeActivated: function(e) {
-            this.$.router.activeRouteContent.firstChild.sessionId = this.sessionId;
-            this.$.router.activeRouteContent.firstChild.bind('sessionId', new PathObserver(this, 'sessionId'));
-            this.bind('sessionId', new PathObserver(this.$.router.activeRouteContent.firstChild, 'sessionId'));
+          ready: function() {
+            // async to mimic an ajax request to retrieve the session information
+            setTimeout(function() {
+              this.$.router.init();
+            }.bind(this), 20);
           },
-          sessionIdChanged: function(){
-            console.log('sessionIdChange', this.sessionId);
-          },
-          ready: function(){
-            var self = this;
-            window.setTimeout(function(){
-              self.sessionId = '4321';
-            }, 3000);
+          routeChanged: function(event) {
+            if (!this.state.sessionId && event.detail.path !== '/login') {
+              event.preventDefault();
+              this.$.router.go('/login');
+            }
           }
         });
       </script>

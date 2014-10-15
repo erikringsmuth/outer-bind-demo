@@ -1,0 +1,23 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/layouts/sidebar-layout.html">
+<link rel="import" href="/elements/app-state.html">
+
+<polymer-element name="login-page">
+  <template>
+    <app-state state="{{state}}"></app-state>
+    <sidebar-layout>
+      <div class="title">Login</div>
+
+      <input type="text" value="{{state.sessionId}}">
+      <button on-click="{{login}}">Login</button>
+
+    </sidebar-layout>
+  </template>
+  <script>
+    Polymer({
+      login: function() {
+        document.querySelector('body /deep/ app-router').go('/');
+      }
+    });
+  </script>
+</polymer-element>
